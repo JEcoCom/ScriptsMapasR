@@ -1,0 +1,15 @@
+install.packages("devtools")
+devtools::install_github("dkahle/ggmap")
+library(ggmap)
+?ggmap
+
+#Nesse ponto entre aspas adicionar achave do API
+key<-""
+register_google(key = key)
+map<-get_googlemap(center = c(lon = -47.917067, lat = -15.870520),zoom=14)
+ggmap(map)
+
+geom_density2d
+stat_density2d
+
+https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
