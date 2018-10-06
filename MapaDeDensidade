@@ -12,7 +12,7 @@ register_google(key = key)
 #Baixando o Mapa. Desse ponto se define a centralização e o zoon do mapa
 map<-get_googlemap(center = c(lon = -47.9215200,lat = -15.870200),zoom=15)
 #Inserindo o conjunto de dados para teste
-dados<-read.table("/Users/jcaetano/Desktop/heatingMap/teste.txt", header=T)
+dados<-read.table(file.choose(), header=T)
 ##Nesse ponto é inserido um conjunto de funcoes concatenadas para gerar o mapa mais complexo
 #Criando o Mapa
 ggmap(map,extent="device")+
