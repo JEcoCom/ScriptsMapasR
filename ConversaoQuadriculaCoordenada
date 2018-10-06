@@ -28,3 +28,8 @@ LatRef<-data.frame(latnames,ilat)
 LongRef<-data.frame(lonnames,ilon)
 ##Selecionando tabela para ser convertida
 data<-read.table(file.choose(),header=T)
+
+#FusãoCoordenadas
+##FusãoTabelas
+tabela1<-merge(data,LatRef, by.x = "lat", by.y = "latnames")
+tabelaf<-merge(tabela1,LongRef, by.x = "lon", by.y = "lonnames")
