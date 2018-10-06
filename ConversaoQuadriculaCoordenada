@@ -1,0 +1,30 @@
+###Script para converter Coordenadas para quadrículas
+##DefinindoOsParametrosDoMapa
+#RangeLatitude
+la1<- -15.888118
+la2<- -15.857434
+#RangeLongitude
+lo1<- -47.956833
+lo2<- -47.891498
+#NúmeroDeLinhasEColunas
+nl<-22
+nc<-47
+####Configurar
+#IntervaloMapa
+ila<-la2-la1
+ilo<-lo2-lo1
+#IntervaloPorQuadrante
+ilaq<-ila/nl
+iloq<-ilo/nc
+#CoordenadasDeCadaLinhaDoGrid
+ilat<-seq(from=la1,to=(la2-ilaq),by=ilaq)
+ilon<-seq(from=lo1,to=(lo2-iloq),by=iloq)
+#NomesDasClasses
+latnames<-c(letters[nl:1])
+lonnames<-c(1:nc)
+#CriandoReferenciaLatidude
+LatRef<-data.frame(latnames,ilat)
+#CriandoReferenciaLongitude
+LongRef<-data.frame(lonnames,ilon)
+##Selecionando tabela para ser convertida
+data<-read.table(file.choose(),header=T)
