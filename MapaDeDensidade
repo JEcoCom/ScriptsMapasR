@@ -20,9 +20,9 @@ dados<-read.table(file.choose(), header=T)
 #Criando o Mapa
 ggmap(map,extent="device")+
 #Criando a geometria
-geom_density2d(data=dados,aes(x=Lon,y=Lat),size=0.3)+
+geom_density2d(data=dados,aes(x=ilon,y=ilat),size=0.3)+
 #Criando densidade
-stat_density2d(data =dados, aes(x=Lon,y=Lat,fill = ..level.., alpha = ..level..),size=0.01, bins=16, geom="polygon")+
+stat_density2d(data =dados, aes(x=ilon,y=ilat,fill = ..level.., alpha = ..level..),size=0.01, bins=16, geom="polygon")+
 #Criando linhas de Escala
 scale_fill_gradient(low = "green", high = "red") + 
 #Criando densidade coloracao
