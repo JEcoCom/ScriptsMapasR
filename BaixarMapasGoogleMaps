@@ -1,15 +1,14 @@
+#instalando o devtools para baixar a versão mais atualizada do ggmap a partir do github
 install.packages("devtools")
+#Baixando o ggmap a partir do github
 devtools::install_github("dkahle/ggmap")
+
 library(ggmap)
-?ggmap
-
-#Nesse ponto entre aspas adicionar achave do API
-key<-""
+#Inserindo a chave do GoogleMaps para conseguir baixar os mapas e realizando o registro(ChoseLife)
+key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV4201y9GnaQ"
 register_google(key = key)
-map<-get_googlemap(center = c(lon = -47.917067, lat = -15.870520),zoom=14)
-ggmap(map)
+#Baixando o Mapa. Desse ponto se define a centralização e o zoon do mapa
+map<-get_googlemap(center = c(lon = -47.9215200,lat = -15.870200),zoom=15)
 
-geom_density2d
-stat_density2d
-
-https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
+#Referencia
+##https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
