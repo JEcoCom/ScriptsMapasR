@@ -30,3 +30,9 @@ scale_alpha(range = c(0, 0.3), guide = FALSE)
 
 #ReferenciaBasica
 ##https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
+
+#Proximos passos
+##Juntar esse script com o script de conversão de coordenadas
+##Criar um campo de definição de parametros
+##Criar uma função para produzir os gráficos
+##Dividir linhas com base no parametro de quantidade de indivíduos observados
