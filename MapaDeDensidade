@@ -1,19 +1,22 @@
+###Instalação dos pacotes
 #instalando o devtools para baixar a versão mais atualizada do ggmap a partir do github
 install.packages("devtools")
 #Baixando o ggmap a partir do github
 devtools::install_github("dkahle/ggmap")
+
+###Baixando o mapa do google maps
 #Carregando o ggmap
 library(ggmap)
-#Baixando o mapa base a partir do google maps
-get_googlemap(center = c(lon = -95.3632715, lat = 29.7632836), zoom = 10)
 #Inserindo a chave do GoogleMaps para conseguir baixar os mapas e realizando o registro(ChoseLife)
 key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV4201y9GnaQ"
 register_google(key = key)
 #Baixando o Mapa. Desse ponto se define a centralização e o zoon do mapa
 map<-get_googlemap(center = c(lon = -47.9215200,lat = -15.870200),zoom=15)
-#Inserindo o conjunto de dados para teste
+
+###Inserindo o conjunto de dados para gerar a camada de densidade
 dados<-read.table(file.choose(), header=T)
 ##Nesse ponto é inserido um conjunto de funcoes concatenadas para gerar o mapa mais complexo
+
 #Criando o Mapa
 ggmap(map,extent="device")+
 #Criando a geometria
@@ -22,8 +25,8 @@ geom_density2d(data=dados,aes(x=Lon,y=Lat),size=0.3)+
 stat_density2d(data =dados, aes(x=Lon,y=Lat,fill = ..level.., alpha = ..level..),size=0.01, bins=16, geom="polygon")+
 #Criando linhas de Escala
 scale_fill_gradient(low = "green", high = "red") + 
-#Criando densidade colora;áo
+#Criando densidade coloracao
 scale_alpha(range = c(0, 0.3), guide = FALSE)
 
 #ReferenciaBasica
-https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
+##https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
