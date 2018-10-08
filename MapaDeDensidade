@@ -11,9 +11,14 @@ library(ggmap)
 key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV4201y9GnaQ"
 register_google(key = key)
 
+
 ##Critérios para a execução do comando
 #Base de dados
-dados<-read.table(file.choose(),header=T)
+dados1<-read.table(file.choose(),header=T)
+#Seleção de Espécie
+sp<-"xc"
+#Seleção de data
+time<-
 #Ponto Central do Mapa
 longitudeP<- -47.9215200
 latitudeP<- -15.870200
@@ -23,6 +28,8 @@ Zoom<- 14
 QuadLat<-dados$lat
 QuadLon<-dados$lon
 
+#Seleção Tabela
+dados<-dados1[dados1$sp==sp,]
 
 #Conversão de Quadrícula para coordenada
 
