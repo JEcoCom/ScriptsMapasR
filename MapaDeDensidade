@@ -10,29 +10,77 @@ library(ggmap)
 #Inserindo a chave do GoogleMaps para conseguir baixar os mapas e realizando o registro(ChoseLife)
 key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV4201y9GnaQ"
 register_google(key = key)
+
+##Critérios para a execução do comando
+#Base de dados
+dados<-read.table(file.choose(),header=T)
+#Ponto Central do Mapa
+longitudeP<- -47.9215200
+latitudeP<- -15.870200
+#Zoom ao ponto
+Zoom<- 14
+#ColunasQuadriculas
+QuadLat<-dados$lat
+QuadLon<-dados$lon
+
+
+#Conversão de Quadrícula para coordenada
+
+###Convertendo as quadrículas para coordenadas
+###Script para converter Coordenadas para quadrículas
+##DefinindoOsParametrosDosLimitesDoMapa
+#RangeLatitude
+la1<- -15.888118
+la2<- -15.857434
+#RangeLongitude
+lo1<- -47.956833
+lo2<- -47.891498
+#NúmeroDeLinhasEColunas
+nl<-22
+nc<-47
+####Configurar
+#IntervaloMapa
+ila<-la2-la1
+ilo<-lo2-lo1
+#IntervaloPorQuadrante
+ilaq<-ila/nl
+iloq<-ilo/nc
+#CoordenadasDeCadaLinhaDoGrid
+ilat<-seq(from=la1,to=(la2-ilaq),by=ilaq)
+ilon<-seq(from=lo1,to=(lo2-iloq),by=iloq)
+#NomesDasClasses
+latnames<-c(letters[nl:1])
+lonnames<-c(1:nc)
+#CriandoReferenciaLatidude
+LatRef<-data.frame(latnames,ilat)
+#CriandoReferenciaLongitude
+LongRef<-data.frame(lonnames,ilon)
+
+#FusãoCoordenadas
+##FusãoTabelas
+tabela1<-merge(dados,LatRef, by.x = "lat", by.y = "latnames")
+data<-merge(tabela1,LongRef, by.x = "lon", by.y = "lonnames")
+
 #Baixando o Mapa. Desse ponto se define a centralização e o zoon do mapa
-map<-get_googlemap(center = c(lon = -47.9215200,lat = -15.870200),zoom=15)
-
-###Inserindo o conjunto de dados para gerar a camada de densidade
-dados<-read.table(file.choose(), header=T)
-##Nesse ponto é inserido um conjunto de funcoes concatenadas para gerar o mapa mais complexo
-
+map<-get_googlemap(center = c(lon = longitudeP,lat = latitudeP),zoom=Zoom)
 #Criando o Mapa
 ggmap(map,extent="device")+
 #Criando a geometria
-geom_density2d(data=dados,aes(x=ilon,y=ilat),size=0.3)+
+geom_density2d(data=data,aes(x=ilon,y=ilat),size=0.3)+
 #Criando densidade
-stat_density2d(data =dados, aes(x=ilon,y=ilat,fill = ..level.., alpha = ..level..),size=0.01, bins=16, geom="polygon")+
+stat_density2d(data =data, aes(x=ilon,y=ilat,fill = ..level.., alpha = ..level..),size=0.01, bins=16, geom="polygon")+
 #Criando linhas de Escala
 scale_fill_gradient(low = "green", high = "red") + 
 #Criando densidade coloracao
 scale_alpha(range = c(0, 0.3), guide = FALSE)
 
+
+
+
 #ReferenciaBasica
 ##https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
 
 #Proximos passos
-##Juntar esse script com o script de conversão de coordenadas
-##Criar um campo de definição de parametros
+##Criar um campo de definição de parametros para selecionar datas e espécies
 ##Criar uma função para produzir os gráficos
 ##Dividir linhas com base no parametro de quantidade de indivíduos observados
