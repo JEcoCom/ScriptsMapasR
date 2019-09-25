@@ -1,7 +1,7 @@
 #Carregando o ggmap
 library(ggmap)
 #Inserindo a chave do GoogleMaps para conseguir baixar os mapas e realizando o registro(ChoseLife)
-key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV1y9GnaQ"
+key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYd420bV1y9GnaQ"
 register_google(key = key)
 
 #Lendo a Tabela de Transectos
