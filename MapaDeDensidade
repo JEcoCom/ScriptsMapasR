@@ -1,37 +1,37 @@
-###Instalação dos pacotes
-#instalando o devtools para baixar a versão mais atualizada do ggmap a partir do github
-install.packages("devtools")
-#Baixando o ggmap a partir do github
-devtools::install_github("dkahle/ggmap")
-
-###Baixando o mapa do google maps
 #Carregando o ggmap
 library(ggmap)
 #Inserindo a chave do GoogleMaps para conseguir baixar os mapas e realizando o registro(ChoseLife)
-key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV4201y9GnaQ"
+key<-"AIzaSyCGZ25pm5h46_a1CJ3DcUPhYdbV1y9GnaQ"
 register_google(key = key)
 
+#Lendo a Tabela de Transectos
+#Instalando o Pacote para ler arquivos do excel
+library(readxl)
+#Lendo as abas como tabelas separadas
+Transectos<-read_excel("N:\\MA - Meio Ambiente\\MANEJO DA FAUNA\\Planilhas\\Transecto\\Transecto.xlsx", sheet="Transecto",
+col_types = c("guess", "guess", "guess", "guess", "guess", "date",  "date",  "date",  "guess",  "skip" )
+)
+Registros<-read_excel("N:\\MA - Meio Ambiente\\MANEJO DA FAUNA\\Planilhas\\Transecto\\Transecto.xlsx", sheet="Registro")
+#Juntadno as duas tabelas para formar a tabela da analise
+dados<-merge(Transectos,Registros,by.x="Transecto", by.y="Transecto")
 
-##Critérios para a execução do comando
-#Base de dados
-dados1<-read.table(file.choose(),header=T)
 #Seleção de Espécie
-sp<-"xc"
+sp<-"GG"
+dados<-subset(dados, Especie==sp)
 #Seleção de data
-time<-
+Inicio<-"2018-10-01"
+Fim<-"2019-10-01"
+dados<-subset(dados, Data>"2018-10-01")
+
+##Parametros de localizacao do mapa
 #Ponto Central do Mapa
 longitudeP<- -47.9215200
 latitudeP<- -15.870200
 #Zoom ao ponto
 Zoom<- 14
 #ColunasQuadriculas
-QuadLat<-dados$lat
-QuadLon<-dados$lon
-
-#Seleção Tabela
-dados<-dados1[dados1$sp==sp,]
-
-#Conversão de Quadrícula para coordenada
+QuadLat<-dados$QuadriculaLetra
+QuadLon<-dados$QuadriculaNumero
 
 ###Convertendo as quadrículas para coordenadas
 ###Script para converter Coordenadas para quadrículas
@@ -56,7 +56,7 @@ iloq<-ilo/nc
 ilat<-seq(from=la1,to=(la2-ilaq),by=ilaq)
 ilon<-seq(from=lo1,to=(lo2-iloq),by=iloq)
 #NomesDasClasses
-latnames<-c(letters[nl:1])
+latnames<-c(LETTERS[nl:1])
 lonnames<-c(1:nc)
 #CriandoReferenciaLatidude
 LatRef<-data.frame(latnames,ilat)
@@ -65,8 +65,8 @@ LongRef<-data.frame(lonnames,ilon)
 
 #FusãoCoordenadas
 ##FusãoTabelas
-tabela1<-merge(dados,LatRef, by.x = "lat", by.y = "latnames")
-data<-merge(tabela1,LongRef, by.x = "lon", by.y = "lonnames")
+tabela1<-merge(dados,LatRef, by.x = "QuadriculaLetra", by.y = "latnames")
+data<-merge(tabela1,LongRef, by.x = "QuadriculaNumero", by.y = "lonnames")
 
 #Baixando o Mapa. Desse ponto se define a centralização e o zoon do mapa
 map<-get_googlemap(center = c(lon = longitudeP,lat = latitudeP),zoom=Zoom)
@@ -80,14 +80,3 @@ stat_density2d(data =data, aes(x=ilon,y=ilat,fill = ..level.., alpha = ..level..
 scale_fill_gradient(low = "green", high = "red") + 
 #Criando densidade coloracao
 scale_alpha(range = c(0, 0.3), guide = FALSE)
-
-
-
-
-#ReferenciaBasica
-##https://app.dominodatalab.com/u/seanlorenz/ggmap-demo/view/ggmap-demo-heat.R
-
-#Proximos passos
-##Criar um campo de definição de parametros para selecionar datas e espécies
-##Criar uma função para produzir os gráficos
-##Dividir linhas com base no parametro de quantidade de indivíduos observados
